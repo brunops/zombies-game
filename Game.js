@@ -47,23 +47,26 @@
     },
 
     update: function (modifier) {
+      var verticalBoundary = 35,
+          horizontalBoundary = 35;
+
       // UP
-      if (Game.keysDown[38]) {
+      if (Game.keysDown[38] && Game.player.y > verticalBoundary) {
         Game.player.setY(Game.player.y - (Game.player.speed * modifier));
       }
 
       // DOWN
-      if (Game.keysDown[40]) {
+      if (Game.keysDown[40] && Game.player.y < Game.canvas.height - verticalBoundary - Player.height) {
         Game.player.setY(Game.player.y + (Game.player.speed * modifier));
       }
 
       // RIGHT
-      if (Game.keysDown[39]) {
+      if (Game.keysDown[39] && Game.player.x < Game.canvas.width - horizontalBoundary - Player.width) {
         Game.player.setX(Game.player.x + (Game.player.speed * modifier));
       }
 
       // LEFT
-      if (Game.keysDown[37]) {
+      if (Game.keysDown[37] && Game.player.x > horizontalBoundary) {
         Game.player.setX(Game.player.x - (Game.player.speed * modifier));
       }
     },
