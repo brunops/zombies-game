@@ -5,6 +5,9 @@
     this.init(x, y);
   }
 
+  Player.width = 32;
+  Player.height = 52;
+
   Player.prototype.init = function (x, y, speed) {
     this.x = x;
     this.y = y;
@@ -43,7 +46,7 @@
   Player.prototype.render = function (context) {
     // ctx.drawImage(sprites,srcX,srcY,srcW,srcH,destX,destY,destW,destH);
     if (this.spriteLoaded) {
-      context.drawImage(this.sprite, 56, 12, 32, 52, this.x, this.y, 32, 52);
+      context.drawImage(this.sprite, 56, 12, Player.width, Player.height, this.x, this.y, Player.width, Player.height);
     }
   };
 
