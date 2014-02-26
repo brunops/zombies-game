@@ -13,7 +13,7 @@
     this.y = y;
 
     // Speed is defined as pixels per second
-    this.speed = speed || 256;
+    this.speed = speed || 150;
 
     this.loadSprite();
   };
