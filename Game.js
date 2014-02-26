@@ -10,7 +10,10 @@
       Game.createCanvas();
       Game.loadBackground();
 
-      Game.player = new Player(50, 50);
+      Game.player = new Player(
+        Game.canvas.width / 2 - Player.width / 2,
+        Game.canvas.height / 2 - Player.height / 2
+      );
 
       Game.bind();
     },
