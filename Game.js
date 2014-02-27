@@ -20,6 +20,9 @@
       Game.projectiles = [];
       Game.enemies = [];
 
+      Game.lastProjectilesCollector = Date.now();
+      Game.lastEnemiesCollector = Date.now();
+
       Game.lastProjectileTime = Date.now();
       Game.projectileCooldown = 150;
 
@@ -61,6 +64,8 @@
       var verticalBoundary = 35,
           horizontalBoundary = 35,
           i,
+          entitiesOutOfBounds = 0,
+          stopCount = false,
           now = Date.now();
 
       Game.gameTime += modifier;
@@ -90,35 +95,51 @@
         Game.projectiles[i].setX(Game.projectiles[i].x + (Game.projectiles[i].speed * modifier));
 
         // delete projectile if out of the scene
-        if (Game.projectiles[i].x > Game.canvas.width) {
-          Game.projectiles.splice(i, 1);
-          i--;
+        if (!stopCount && Game.projectiles[i].x > Game.canvas.width) {
+          entitiesOutOfBounds++;
         }
+        else {
+          stopCount = true;
+        }
+      }
+      if (entitiesOutOfBounds && now - Game.lastProjectilesCollector > 1000) {
+        Game.projectiles.splice(0, entitiesOutOfBounds);
+        Game.lastProjectilesCollector = now;
       }
 
       // SPACE - shoot!
       if (Game.keysDown[32]) {
         // prevent spamming projectiles
         if (now - Game.lastProjectileTime > Game.projectileCooldown) {
-          Game.projectiles.push(new Projectile(Game.player.x, Game.player.y));
+          Game.projectiles.push(new Projectile(Game.player.x, Game.player.y + (Player.height / 2) - (Projectile.height / 2)));
           Game.lastProjectileTime = now;
         }
       }
 
       // update all enemies
+      stopCount = false;
+      entitiesOutOfBounds = 0;
       for (i = 0; i < Game.enemies.length; i++) {
         Game.enemies[i].setX(Game.enemies[i].x - (Game.enemies[i].speed * modifier));
 
         // delete projectile if out of the scene
-        if (Game.enemies[i].x + Zombie.width < 0) {
-          Game.enemies.splice(i, 1);
-          i--;
+        // Splice zombies out of bounds only once
+        // splicing many times is stupid and moving big arrays around hurts performance
+        if (!stopCount && Game.enemies[i].x + Zombie.width < 0) {
+          entitiesOutOfBounds++;
         }
+        else {
+          stopCount = true;
+        }
+      }
+      if (entitiesOutOfBounds && now - Game.lastEnemiesCollector > 1000) {
+        Game.enemies.splice(0, entitiesOutOfBounds);
+        Game.lastEnemiesCollector = now;
       }
 
       // Create some enemies
       // It gets harder as time goes by according to the equation: 1 - .998^Game.gameTime
-      if (Math.random() < 1 - Math.pow(0.997, Game.gameTime)) {
+      if (Math.random() < 1 - Math.pow(0.995, Game.gameTime)) {
         Game.enemies.push(new Zombie(
           Game.canvas.width,
           Math.random() * (Game.canvas.height - Zombie.height - (2 * verticalBoundary)) + verticalBoundary
