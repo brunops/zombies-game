@@ -15,11 +15,12 @@
     this.spriteSrc = spriteSrc;
     this.spriteSrcX = spriteSrcX;
     this.spriteSrcY = spriteSrcY;
+    if (spriteSrc) {
+      this.loadSprite();
+    }
 
     // Speed is defined as pixels per second
     this.speed = speed || 200;
-
-    this.loadSprite();
   };
 
   Entity.prototype.loadSprite = function () {
