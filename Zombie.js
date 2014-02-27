@@ -12,7 +12,7 @@
       'public/images/sprites/zombies.png',
       0,
       32,
-      speed || 70
+      speed || 20
     );
   }
 

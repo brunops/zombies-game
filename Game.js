@@ -1,10 +1,12 @@
-/* global Player, Projectile */
+/* global Player, Projectile, Zombie */
 
 (function () {
   'use strict';
 
   var Game = {
     init: function () {
+      Game.gameTime = 0;
+
       Game.keysDown = {};
 
       Game.createCanvas();
@@ -16,6 +18,7 @@
       );
 
       Game.projectiles = [];
+      Game.enemies = [];
 
       Game.lastProjectileTime = Date.now();
       Game.projectileCooldown = 150;
@@ -57,7 +60,10 @@
     update: function (modifier) {
       var verticalBoundary = 35,
           horizontalBoundary = 35,
-          i;
+          i,
+          now = Date.now();
+
+      Game.gameTime += modifier;
 
       // UP
       if (Game.keysDown[38] && Game.player.y > verticalBoundary) {
@@ -92,12 +98,31 @@
 
       // SPACE - shoot!
       if (Game.keysDown[32]) {
-        var now = Date.now();
         // prevent spamming projectiles
         if (now - Game.lastProjectileTime > Game.projectileCooldown) {
           Game.projectiles.push(new Projectile(Game.player.x, Game.player.y));
           Game.lastProjectileTime = now;
         }
+      }
+
+      // update all enemies
+      for (i = 0; i < Game.enemies.length; i++) {
+        Game.enemies[i].setX(Game.enemies[i].x - (Game.enemies[i].speed * modifier));
+
+        // delete projectile if out of the scene
+        if (Game.enemies[i].x + Zombie.width < 0) {
+          Game.enemies.splice(i, 1);
+          i--;
+        }
+      }
+
+      // Create some enemies
+      // It gets harder as time goes by according to the equation: 1 - .998^Game.gameTime
+      if (Math.random() < 1 - Math.pow(0.997, Game.gameTime)) {
+        Game.enemies.push(new Zombie(
+          Game.canvas.width,
+          Math.random() * (Game.canvas.height - Zombie.height - (2 * verticalBoundary)) + verticalBoundary
+        ));
       }
     },
 
@@ -110,6 +135,10 @@
 
       for (i = 0; i < Game.projectiles.length; ++i) {
         Game.projectiles[i].render(Game.context);
+      }
+
+      for (i = 0; i < Game.enemies.length; ++i) {
+        Game.enemies[i].render(Game.context);
       }
 
       Game.player.render(Game.context);
