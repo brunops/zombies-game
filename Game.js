@@ -1,4 +1,4 @@
-/* global Player */
+/* global Player, Projectile */
 
 (function () {
   'use strict';
@@ -14,6 +14,8 @@
         Game.canvas.width / 2 - Player.width / 2,
         Game.canvas.height / 2 - Player.height / 2
       );
+
+      Game.projectiles = [];
 
       Game.bind();
     },
@@ -51,7 +53,8 @@
 
     update: function (modifier) {
       var verticalBoundary = 35,
-          horizontalBoundary = 35;
+          horizontalBoundary = 35,
+          i;
 
       // UP
       if (Game.keysDown[38] && Game.player.y > verticalBoundary) {
@@ -72,11 +75,33 @@
       if (Game.keysDown[37] && Game.player.x > horizontalBoundary) {
         Game.player.setX(Game.player.x - (Game.player.speed * modifier));
       }
+
+      // update all projectiles
+      for (i = 0; i < Game.projectiles.length; i++) {
+        Game.projectiles[i].setX(Game.projectiles[i].x + (Game.projectiles[i].speed * modifier));
+
+        // delete projectile if out of the scene
+        if (Game.projectiles[i].x > Game.canvas.width) {
+          Game.projectiles.splice(i, 1);
+          i--;
+        }
+      }
+
+      // SPACE - shoot!
+      if (Game.keysDown[32]) {
+        Game.projectiles.push(new Projectile(Game.player.x, Game.player.y));
+      }
     },
 
     render: function () {
+      var i ;
+
       if (Game.backgroundReady) {
         Game.context.drawImage(Game.backgroundImg, 0, 0);
+      }
+
+      for (i = 0; i < Game.projectiles.length; ++i) {
+        Game.projectiles[i].render(Game.context);
       }
 
       Game.player.render(Game.context);
