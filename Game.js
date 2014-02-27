@@ -17,6 +17,9 @@
 
       Game.projectiles = [];
 
+      Game.lastProjectileTime = Date.now();
+      Game.projectileCooldown = 150;
+
       Game.bind();
     },
 
@@ -89,12 +92,17 @@
 
       // SPACE - shoot!
       if (Game.keysDown[32]) {
-        Game.projectiles.push(new Projectile(Game.player.x, Game.player.y));
+        var now = Date.now();
+        // prevent spamming projectiles
+        if (now - Game.lastProjectileTime > Game.projectileCooldown) {
+          Game.projectiles.push(new Projectile(Game.player.x, Game.player.y));
+          Game.lastProjectileTime = now;
+        }
       }
     },
 
     render: function () {
-      var i ;
+      var i;
 
       if (Game.backgroundReady) {
         Game.context.drawImage(Game.backgroundImg, 0, 0);
