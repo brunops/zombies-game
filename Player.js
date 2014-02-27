@@ -10,14 +10,14 @@
       Player.width,
       Player.height,
       'public/images/sprites/heroes.png',
-      56,
-      12,
+      105,
+      142,
       speed || 150
     );
   }
 
   Player.width = 32;
-  Player.height = 52;
+  Player.height = 48;
 
   Player.prototype = new Entity();
 
