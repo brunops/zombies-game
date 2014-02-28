@@ -20,6 +20,7 @@
   Player.height = 48;
 
   Player.prototype = new Entity();
+  Player.prototype.constructor = Player;
 
   // Make Player available globally
   window.Player = Player;

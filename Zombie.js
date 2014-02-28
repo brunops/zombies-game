@@ -20,6 +20,7 @@
   Zombie.height = 32;
 
   Zombie.prototype = new Entity();
+  Zombie.prototype.constructor = Zombie;
 
   // Make Zombie available globally
   window.Zombie = Zombie;

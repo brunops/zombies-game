@@ -20,6 +20,7 @@
   Projectile.height = 35;
 
   Projectile.prototype = new Entity();
+  Projectile.prototype.constructor = Projectile;
 
   // Make Projectile available globally
   window.Projectile = Projectile;
