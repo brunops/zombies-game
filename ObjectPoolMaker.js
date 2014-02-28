@@ -3,8 +3,8 @@
 
   function ObjectPoolMaker(Constructor, size) {
     var objectPool = [],
-        marker = 0,
-        poolSize = size || 0;
+        nextAvailableIndex = 0,
+        poolSize = size || 1;
 
     if (poolSize) {
       expandPool(poolSize);
@@ -22,25 +22,25 @@
 
     return {
       create: function () {
-        if (marker >= poolSize) {
+        if (nextAvailableIndex >= poolSize) {
           expandPool(poolSize * 2);
         }
 
-        var obj = objectPool[marker];
-        obj.index = marker;
-        marker += 1;
+        var obj = objectPool[nextAvailableIndex];
+        obj.index = nextAvailableIndex;
+        nextAvailableIndex += 1;
         obj.constructor.apply(obj, arguments);
 
         return obj;
       },
 
       destroy: function (obj) {
-        marker -= 1;
+        nextAvailableIndex -= 1;
 
-        var lastObj = objectPool[marker],
+        var lastObj = objectPool[nextAvailableIndex],
             lastObjIndex = lastObj.index;
 
-        objectPool[marker] = obj;
+        objectPool[nextAvailableIndex] = obj;
         objectPool[obj.index] = lastObj;
 
         lastObj.index = obj.index;
