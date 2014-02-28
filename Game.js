@@ -1,10 +1,16 @@
-/* global Player, Projectile, Zombie */
+/* global Player, Projectile, Zombie, ObjectPoolMaker */
 
 (function () {
   'use strict';
 
   var Game = {
     init: function () {
+      Game.difficulty = 0.01;
+      Game.maxDifficulty = 0.1;
+      Game.difficultyIncrement = 0.005;
+      Game.difficultyCooldown = 3;
+      Game.lastDifficultyIncrease = 0;
+
       Game.gameTime = 0;
 
       Game.keysDown = {};
@@ -17,11 +23,8 @@
         Game.canvas.height / 2 - Player.height / 2
       );
 
-      Game.projectiles = [];
-      Game.enemies = [];
-
-      Game.lastProjectilesCollector = Date.now();
-      Game.lastEnemiesCollector = Date.now();
+      Game.zombiePool = new ObjectPoolMaker(Zombie, 100);
+      Game.projectilePool = new ObjectPoolMaker(Projectile, 100);
 
       Game.lastProjectileTime = Date.now();
       Game.projectileCooldown = 150;
@@ -64,8 +67,6 @@
       var verticalBoundary = 35,
           horizontalBoundary = 35,
           i,
-          entitiesOutOfBounds = 0,
-          stopCount = false,
           now = Date.now();
 
       Game.gameTime += modifier;
@@ -91,59 +92,53 @@
       }
 
       // update all projectiles
-      for (i = 0; i < Game.projectiles.length; i++) {
-        Game.projectiles[i].setX(Game.projectiles[i].x + (Game.projectiles[i].speed * modifier));
+      for (i = 0; i < Game.projectilePool.size(); i++) {
+        var projectile = Game.projectilePool.objectPool()[i];
+
+        projectile.setX(projectile.x + (projectile.speed * modifier));
 
         // delete projectile if out of the scene
-        if (!stopCount && Game.projectiles[i].x > Game.canvas.width) {
-          entitiesOutOfBounds++;
+        if (projectile.x > Game.canvas.width) {
+          Game.projectilePool.destroy(projectile);
+          i--;
         }
-        else {
-          stopCount = true;
-        }
-      }
-      if (entitiesOutOfBounds && now - Game.lastProjectilesCollector > 1000) {
-        Game.projectiles.splice(0, entitiesOutOfBounds);
-        Game.lastProjectilesCollector = now;
       }
 
       // SPACE - shoot!
       if (Game.keysDown[32]) {
         // prevent spamming projectiles
         if (now - Game.lastProjectileTime > Game.projectileCooldown) {
-          Game.projectiles.push(new Projectile(Game.player.x, Game.player.y + (Player.height / 2) - (Projectile.height / 2)));
+          Game.projectilePool.create(Game.player.x, Game.player.y + (Player.height / 2) - (Projectile.height / 2));
           Game.lastProjectileTime = now;
         }
       }
 
       // update all enemies
-      stopCount = false;
-      entitiesOutOfBounds = 0;
-      for (i = 0; i < Game.enemies.length; i++) {
-        Game.enemies[i].setX(Game.enemies[i].x - (Game.enemies[i].speed * modifier));
+      for (i = 0; i < Game.zombiePool.size(); i++) {
+        var zombie = Game.zombiePool.objectPool()[i];
+        zombie.setX(zombie.x - (zombie.speed * modifier));
 
-        // delete projectile if out of the scene
-        // Splice zombies out of bounds only once
-        // splicing many times is stupid and moving big arrays around hurts performance
-        if (!stopCount && Game.enemies[i].x + Zombie.width < 0) {
-          entitiesOutOfBounds++;
+        // delete zombie if out of the scene
+        if (zombie.x + Zombie.width < 0) {
+          Game.zombiePool.destroy(zombie);
+          i--;
         }
-        else {
-          stopCount = true;
-        }
-      }
-      if (entitiesOutOfBounds && now - Game.lastEnemiesCollector > 1000) {
-        Game.enemies.splice(0, entitiesOutOfBounds);
-        Game.lastEnemiesCollector = now;
       }
 
       // Create some enemies
-      // It gets harder as time goes by according to the equation: 1 - .998^Game.gameTime
-      if (Math.random() < 1 - Math.pow(0.995, Game.gameTime)) {
-        Game.enemies.push(new Zombie(
+      // It gets harder as time goes by..
+      if (Game.difficulty < Game.maxDifficulty &&
+          Game.gameTime - Game.lastDifficultyIncrease > Game.difficultyCooldown) {
+        Game.difficulty += Game.difficultyIncrement;
+        Game.lastDifficultyIncrease = Game.gameTime;
+        console.log(Game.difficulty)
+      }
+
+      if (Math.random() < Game.difficulty) {
+        Game.zombiePool.create(
           Game.canvas.width,
           Math.random() * (Game.canvas.height - Zombie.height - (2 * verticalBoundary)) + verticalBoundary
-        ));
+        );
       }
     },
 
@@ -154,12 +149,12 @@
         Game.context.drawImage(Game.backgroundImg, 0, 0);
       }
 
-      for (i = 0; i < Game.projectiles.length; ++i) {
-        Game.projectiles[i].render(Game.context);
+      for (i = 0; i < Game.projectilePool.size(); ++i) {
+        Game.projectilePool.objectPool()[i].render(Game.context);
       }
 
-      for (i = 0; i < Game.enemies.length; ++i) {
-        Game.enemies[i].render(Game.context);
+      for (i = 0; i < Game.zombiePool.size(); ++i) {
+        Game.zombiePool.objectPool()[i].render(Game.context);
       }
 
       Game.player.render(Game.context);

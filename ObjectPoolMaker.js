@@ -4,10 +4,10 @@
   function ObjectPoolMaker(Constructor, size) {
     var objectPool = [],
         nextAvailableIndex = 0,
-        poolSize = size || 1;
+        poolSize = 1;
 
-    if (poolSize) {
-      expandPool(poolSize);
+    if (size) {
+      expandPool(size);
     }
 
     function expandPool(newSize) {
@@ -22,14 +22,14 @@
 
     return {
       create: function () {
-        if (nextAvailableIndex >= poolSize) {
+        if (nextAvailableIndex >= poolSize - 1) {
           expandPool(poolSize * 2);
         }
 
         var obj = objectPool[nextAvailableIndex];
         obj.index = nextAvailableIndex;
         nextAvailableIndex += 1;
-        obj.constructor.apply(obj, arguments);
+        Constructor.apply(obj, arguments);
 
         return obj;
       },
