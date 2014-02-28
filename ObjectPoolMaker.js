@@ -45,8 +45,15 @@
 
         lastObj.index = obj.index;
         obj.index = lastObjIndex;
-      }
+      },
 
+      size: function () {
+        return nextAvailableIndex;
+      },
+
+      objectPool: function () {
+        return objectPool;
+      }
     };
   }
 
