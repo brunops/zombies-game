@@ -9,12 +9,12 @@
     this.x = x;
     this.y = y;
 
-    this.width = width;
-    this.height = height;
+    this.constructor.width = width;
+    this.constructor.height = height;
 
-    this.spriteSrc = spriteSrc;
-    this.spriteSrcX = spriteSrcX;
-    this.spriteSrcY = spriteSrcY;
+    this.constructor.spriteSrc = spriteSrc;
+    this.constructor.spriteSrcX = spriteSrcX;
+    this.constructor.spriteSrcY = spriteSrcY;
     if (spriteSrc) {
       this.loadSprite();
     }
@@ -24,14 +24,18 @@
   };
 
   Entity.prototype.loadSprite = function () {
+    if (this.constructor.spriteLoaded) {
+      return;
+    }
+
     var self = this;
 
-    this.spriteLoaded = false;
-    this.sprite = new Image();
+    this.constructor.spriteLoaded = false;
+    this.constructor.sprite = new Image();
 
-    this.sprite.src = this.spriteSrc;
-    this.sprite.onload = function () {
-      self.spriteLoaded = true;
+    this.constructor.sprite.src = this.constructor.spriteSrc;
+    this.constructor.sprite.onload = function () {
+      self.constructor.spriteLoaded = true;
     };
   };
 
@@ -49,8 +53,17 @@
   };
 
   Entity.prototype.render = function (context) {
-    if (this.spriteLoaded) {
-      context.drawImage(this.sprite, this.spriteSrcX, this.spriteSrcY, this.width, this.height, this.x, this.y, this.width, this.height);
+    if (this.constructor.spriteLoaded) {
+      context.drawImage(
+        this.constructor.sprite,
+        this.constructor.spriteSrcX,
+        this.constructor.spriteSrcY,
+        this.constructor.width,
+        this.constructor.height,
+        this.x,
+        this.y,
+        this.constructor.width,
+        this.constructor.height);
     }
   };
 
