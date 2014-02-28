@@ -6,10 +6,24 @@
         marker = 0,
         poolSize = size || 0;
 
+    if (poolSize) {
+      expandPool(poolSize);
+    }
+
+    function expandPool(newSize) {
+      var i;
+
+      for (i = 0; i < newSize - poolSize; i++) {
+        objectPool.push(new Constructor());
+      }
+
+      poolSize = newSize;
+    }
+
     return {
       create: function () {
         if (marker >= poolSize) {
-          this.expandPool(poolSize * 2);
+          expandPool(poolSize * 2);
         }
 
         var obj = objectPool[marker];
@@ -18,16 +32,6 @@
         obj.constructor.apply(obj, arguments);
 
         return obj;
-      },
-
-      expandPool: function (newSize) {
-        var i;
-
-        for (i = 0; i < newSize - poolSize; i++) {
-          objectPool.push(new Constructor());
-        }
-
-        poolSize = newSize;
       },
 
       destroy: function (obj) {
