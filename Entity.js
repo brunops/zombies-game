@@ -81,6 +81,15 @@
     }
   };
 
+  Entity.prototype.isCollided = function (entity2) {
+    // no collision if there's any gap
+    return !(this.x + this.constructor.width <= entity2.x ||
+      this.x > entity2.x + this.constructor.width         ||
+      this.y + this.constructor.height <= entity2.y       ||
+      this.y > entity2.y + this.constructor.height
+    );
+  };
+
   // Make Entity available globally
   window.Entity = Entity;
 
