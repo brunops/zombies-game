@@ -1,16 +1,19 @@
 (function () {
   'use strict';
 
-  function Entity(x, y, width, height, spriteSrc, framesPosition, frameCooldown, speed) {
-    this.init(x, y, width, height, spriteSrc, framesPosition, frameCooldown, speed);
+  function Entity(x, y, width, height, spriteSrc, framesPosition, frameCooldown, speed, renderedWidth, renderedHeight) {
+    this.init(x, y, width, height, spriteSrc, framesPosition, frameCooldown, speed, renderedWidth, renderedHeight);
   }
 
-  Entity.prototype.init = function (x, y, width, height, spriteSrc, framesPosition, frameCooldown, speed) {
+  Entity.prototype.init = function (x, y, width, height, spriteSrc, framesPosition, frameCooldown, speed, renderedWidth, renderedHeight) {
     this.x = x;
     this.y = y;
 
     this.constructor.width = width;
     this.constructor.height = height;
+
+    this.constructor.renderedWidth = renderedWidth ? renderedWidth : width;
+    this.constructor.renderedHeight = renderedHeight ? renderedHeight : height;
 
     this.constructor.spriteSrc = spriteSrc;
     this.constructor.framesPosition = framesPosition;
@@ -64,8 +67,8 @@
         this.constructor.height,
         this.x,
         this.y,
-        this.constructor.width,
-        this.constructor.height);
+        this.constructor.renderedWidth,
+        this.constructor.renderedHeight);
     }
   };
 
@@ -83,10 +86,10 @@
 
   Entity.prototype.isCollided = function (entity2) {
     // no collision if there's any gap
-    return !(this.x + this.constructor.width <= entity2.x ||
-      this.x > entity2.x + this.constructor.width         ||
-      this.y + this.constructor.height <= entity2.y       ||
-      this.y > entity2.y + this.constructor.height
+    return !(this.x + this.constructor.renderedWidth <= entity2.x ||
+      this.x > entity2.x + this.constructor.renderedWidth         ||
+      this.y + this.constructor.renderedHeight <= entity2.y       ||
+      this.y > entity2.y + this.constructor.renderedHeight
     );
   };
 
