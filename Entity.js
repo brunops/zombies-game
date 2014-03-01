@@ -1,11 +1,11 @@
 (function () {
   'use strict';
 
-  function Entity(x, y, width, height, spriteSrc, spriteSrcX, spriteSrcY, speed) {
-    this.init(x, y, width, height, spriteSrc, spriteSrcX, spriteSrcY, speed);
+  function Entity(x, y, width, height, spriteSrc, framesPosition, frameCooldown, speed) {
+    this.init(x, y, width, height, spriteSrc, framesPosition, frameCooldown, speed);
   }
 
-  Entity.prototype.init = function (x, y, width, height, spriteSrc, spriteSrcX, spriteSrcY, speed) {
+  Entity.prototype.init = function (x, y, width, height, spriteSrc, framesPosition, frameCooldown, speed) {
     this.x = x;
     this.y = y;
 
@@ -13,8 +13,10 @@
     this.constructor.height = height;
 
     this.constructor.spriteSrc = spriteSrc;
-    this.constructor.spriteSrcX = spriteSrcX;
-    this.constructor.spriteSrcY = spriteSrcY;
+    this.constructor.framesPosition = framesPosition;
+    this.constructor.frameCooldown = frameCooldown;
+    this.lastFrameUpdate = Date.now();
+    this.currentFrame = 0;
     if (spriteSrc) {
       this.loadSprite();
     }
@@ -56,14 +58,26 @@
     if (this.constructor.spriteLoaded) {
       context.drawImage(
         this.constructor.sprite,
-        this.constructor.spriteSrcX,
-        this.constructor.spriteSrcY,
+        this.constructor.framesPosition[this.currentFrame][0],
+        this.constructor.framesPosition[this.currentFrame][1],
         this.constructor.width,
         this.constructor.height,
         this.x,
         this.y,
         this.constructor.width,
         this.constructor.height);
+    }
+  };
+
+  Entity.prototype.update = function (now) {
+    now = now || Date.now();
+
+    if (now - this.lastFrameUpdate > this.constructor.frameCooldown) {
+      this.currentFrame += 1;
+      this.lastFrameUpdate = now;
+    }
+    if (this.constructor.framesPosition.length <= this.currentFrame) {
+      this.currentFrame = 0;
     }
   };
 

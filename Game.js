@@ -116,6 +116,7 @@
       // update all enemies
       for (i = 0; i < Game.zombiePool.size(); i++) {
         var zombie = Game.zombiePool.objectPool()[i];
+        zombie.update(now);
         zombie.setX(zombie.x - (zombie.speed * modifier));
 
         // delete zombie if out of the scene
