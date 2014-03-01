@@ -181,12 +181,12 @@
         Game.projectilePool.objectPool()[i].render(Game.context);
       }
 
-      for (i = 0; i < Game.zombiePool.size(); ++i) {
-        Game.zombiePool.objectPool()[i].render(Game.context);
-      }
-
       for (i = 0; i < Game.explosions.length; ++i) {
         Game.explosions[i].render(Game.context);
+      }
+
+      for (i = 0; i < Game.zombiePool.size(); ++i) {
+        Game.zombiePool.objectPool()[i].render(Game.context);
       }
 
       Game.player.render(Game.context);
