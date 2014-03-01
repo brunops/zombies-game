@@ -1,4 +1,4 @@
-/* global Player, Projectile, Zombie, ObjectPoolMaker */
+/* global Player, Projectile, Zombie, Explosion, ObjectPoolMaker */
 
 (function () {
   'use strict';
@@ -6,7 +6,7 @@
   var Game = {
     init: function () {
       Game.difficulty = 0.01;
-      Game.maxDifficulty = 0.13;
+      Game.maxDifficulty = 0.2;
       Game.difficultyIncrement = 0.005;
       Game.difficultyCooldown = 3;
       Game.lastDifficultyIncrease = 0;
@@ -25,6 +25,7 @@
 
       Game.zombiePool = new ObjectPoolMaker(Zombie, 100);
       Game.projectilePool = new ObjectPoolMaker(Projectile, 100);
+      Game.explosions = [];
 
       Game.lastProjectileTime = Date.now();
       Game.projectileCooldown = 100;
@@ -68,6 +69,8 @@
           horizontalBoundary = 35,
           i,
           j,
+          zombie,
+          projectile,
           now = Date.now();
 
       Game.gameTime += modifier;
@@ -94,7 +97,7 @@
 
       // update all projectiles
       for (i = 0; i < Game.projectilePool.size(); i++) {
-        var projectile = Game.projectilePool.objectPool()[i];
+        projectile = Game.projectilePool.objectPool()[i];
 
         projectile.setX(projectile.x + (projectile.speed * modifier));
 
@@ -106,12 +109,15 @@
         else {
           // kill zombies!
           for (j = 0; j < Game.zombiePool.size(); j++) {
-            var zombie = Game.zombiePool.objectPool()[j];
+            zombie = Game.zombiePool.objectPool()[j];
             if (projectile.isCollided(zombie)) {
+              Game.explosions.push(new Explosion(zombie.x, zombie.y));
+
               Game.projectilePool.destroy(projectile);
               i--;
               Game.zombiePool.destroy(zombie);
               j--;
+
               break;
             }
           }
@@ -130,7 +136,7 @@
 
       // update all enemies
       for (i = 0; i < Game.zombiePool.size(); i++) {
-        var zombie = Game.zombiePool.objectPool()[i];
+        zombie = Game.zombiePool.objectPool()[i];
         zombie.update(now);
         zombie.setX(zombie.x - (zombie.speed * modifier));
 
@@ -155,6 +161,13 @@
           Math.random() * (Game.canvas.height - Zombie.height - (2 * verticalBoundary)) + verticalBoundary
         );
       }
+
+      for (i = 0; i < Game.explosions.length; ++i) {
+        Game.explosions[i].update();
+        if (Game.explosions[i].currentFrame >= Explosion.framesPosition.length - 1) {
+          Game.explosions.splice(i--, 1);
+        }
+      }
     },
 
     render: function () {
@@ -166,6 +179,10 @@
 
       for (i = 0; i < Game.projectilePool.size(); ++i) {
         Game.projectilePool.objectPool()[i].render(Game.context);
+      }
+
+      for (i = 0; i < Game.explosions.length; ++i) {
+        Game.explosions[i].render(Game.context);
       }
 
       for (i = 0; i < Game.zombiePool.size(); ++i) {

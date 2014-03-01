@@ -12,7 +12,9 @@
       'public/images/sprites/fireball2.png',
       [[0, 290]],
       0,
-      speed || 400
+      speed || 400,
+      35,
+      25
     );
   }
 
