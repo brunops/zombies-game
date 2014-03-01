@@ -10,8 +10,8 @@
       Player.width,
       Player.height,
       'public/images/sprites/heroes.png',
-      105,
-      142,
+      [[105, 142]],
+      0,
       speed || 150
     );
   }

@@ -10,9 +10,9 @@
       Zombie.width,
       Zombie.height,
       'public/images/sprites/zombies.png',
-      0,
-      32,
-      speed || 20
+      [[0, 32], [32, 32], [64, 32], [32, 32]],
+      220,
+      speed || (12 + Math.random() * 15)
     );
   }
 

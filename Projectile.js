@@ -10,8 +10,8 @@
       Projectile.width,
       Projectile.height,
       'public/images/sprites/fireball2.png',
+      [[0, 290]],
       0,
-      290,
       speed || 400
     );
   }
