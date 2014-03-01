@@ -6,7 +6,7 @@
   var Game = {
     init: function () {
       Game.difficulty = 0.01;
-      Game.maxDifficulty = 0.2;
+      Game.maxDifficulty = 0.13;
       Game.difficultyIncrement = 0.005;
       Game.difficultyCooldown = 3;
       Game.lastDifficultyIncrease = 0;
@@ -27,7 +27,7 @@
       Game.projectilePool = new ObjectPoolMaker(Projectile, 100);
 
       Game.lastProjectileTime = Date.now();
-      Game.projectileCooldown = 200;
+      Game.projectileCooldown = 100;
 
       Game.bind();
     },
@@ -67,6 +67,7 @@
       var verticalBoundary = 35,
           horizontalBoundary = 35,
           i,
+          j,
           now = Date.now();
 
       Game.gameTime += modifier;
@@ -102,6 +103,20 @@
           Game.projectilePool.destroy(projectile);
           i--;
         }
+        else {
+          // kill zombies!
+          for (j = 0; j < Game.zombiePool.size(); j++) {
+            var zombie = Game.zombiePool.objectPool()[j];
+            if (projectile.isCollided(zombie)) {
+              Game.projectilePool.destroy(projectile);
+              i--;
+              Game.zombiePool.destroy(zombie);
+              j--;
+              break;
+            }
+          }
+        }
+
       }
 
       // SPACE - shoot!
