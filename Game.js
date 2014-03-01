@@ -1,4 +1,4 @@
-/* global Player, Projectile, Zombie, ObjectPoolMaker */
+/* global Player, Projectile, Zombie, Explosion, ObjectPoolMaker */
 
 (function () {
   'use strict';
@@ -25,6 +25,7 @@
 
       Game.zombiePool = new ObjectPoolMaker(Zombie, 100);
       Game.projectilePool = new ObjectPoolMaker(Projectile, 100);
+      Game.explosions = [];
 
       Game.lastProjectileTime = Date.now();
       Game.projectileCooldown = 100;
@@ -110,10 +111,13 @@
           for (j = 0; j < Game.zombiePool.size(); j++) {
             zombie = Game.zombiePool.objectPool()[j];
             if (projectile.isCollided(zombie)) {
+              Game.explosions.push(new Explosion(zombie.x, zombie.y));
+
               Game.projectilePool.destroy(projectile);
               i--;
               Game.zombiePool.destroy(zombie);
               j--;
+
               break;
             }
           }
@@ -157,6 +161,13 @@
           Math.random() * (Game.canvas.height - Zombie.height - (2 * verticalBoundary)) + verticalBoundary
         );
       }
+
+      for (i = 0; i < Game.explosions.length; ++i) {
+        Game.explosions[i].update();
+        if (Game.explosions[i].currentFrame >= Explosion.framesPosition.length - 1) {
+          Game.explosions.splice(i--, 1);
+        }
+      }
     },
 
     render: function () {
@@ -172,6 +183,10 @@
 
       for (i = 0; i < Game.zombiePool.size(); ++i) {
         Game.zombiePool.objectPool()[i].render(Game.context);
+      }
+
+      for (i = 0; i < Game.explosions.length; ++i) {
+        Game.explosions[i].render(Game.context);
       }
 
       Game.player.render(Game.context);
