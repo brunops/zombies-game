@@ -6,7 +6,7 @@
   var Game = {
     init: function () {
       Game.difficulty = 0.01;
-      Game.maxDifficulty = 0.1;
+      Game.maxDifficulty = 0.2;
       Game.difficultyIncrement = 0.005;
       Game.difficultyCooldown = 3;
       Game.lastDifficultyIncrease = 0;
