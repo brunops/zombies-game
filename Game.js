@@ -68,6 +68,8 @@
           horizontalBoundary = 35,
           i,
           j,
+          zombie,
+          projectile,
           now = Date.now();
 
       Game.gameTime += modifier;
@@ -94,7 +96,7 @@
 
       // update all projectiles
       for (i = 0; i < Game.projectilePool.size(); i++) {
-        var projectile = Game.projectilePool.objectPool()[i];
+        projectile = Game.projectilePool.objectPool()[i];
 
         projectile.setX(projectile.x + (projectile.speed * modifier));
 
@@ -106,7 +108,7 @@
         else {
           // kill zombies!
           for (j = 0; j < Game.zombiePool.size(); j++) {
-            var zombie = Game.zombiePool.objectPool()[j];
+            zombie = Game.zombiePool.objectPool()[j];
             if (projectile.isCollided(zombie)) {
               Game.projectilePool.destroy(projectile);
               i--;
@@ -130,7 +132,7 @@
 
       // update all enemies
       for (i = 0; i < Game.zombiePool.size(); i++) {
-        var zombie = Game.zombiePool.objectPool()[i];
+        zombie = Game.zombiePool.objectPool()[i];
         zombie.update(now);
         zombie.setX(zombie.x - (zombie.speed * modifier));
 
