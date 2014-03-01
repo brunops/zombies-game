@@ -131,7 +131,6 @@
           Game.gameTime - Game.lastDifficultyIncrease > Game.difficultyCooldown) {
         Game.difficulty += Game.difficultyIncrement;
         Game.lastDifficultyIncrease = Game.gameTime;
-        console.log(Game.difficulty)
       }
 
       if (Math.random() < Game.difficulty) {
