@@ -27,7 +27,7 @@
       Game.projectilePool = new ObjectPoolMaker(Projectile, 100);
 
       Game.lastProjectileTime = Date.now();
-      Game.projectileCooldown = 150;
+      Game.projectileCooldown = 200;
 
       Game.bind();
     },
