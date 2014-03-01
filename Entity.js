@@ -75,9 +75,9 @@
     if (now - this.lastFrameUpdate > this.constructor.frameCooldown) {
       this.currentFrame += 1;
       this.lastFrameUpdate = now;
-    }
-    if (this.constructor.framesPosition.length <= this.currentFrame) {
-      this.currentFrame = 0;
+      if (this.constructor.framesPosition.length <= this.currentFrame) {
+        this.currentFrame = 0;
+      }
     }
   };
 
