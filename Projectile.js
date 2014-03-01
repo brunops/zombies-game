@@ -7,17 +7,14 @@
     this.base(
       x,
       y,
-      Projectile.width,
-      Projectile.height,
+      45,
+      35,
       'public/images/sprites/fireball2.png',
       [[0, 290]],
       0,
       speed || 400
     );
   }
-
-  Projectile.width = 45;
-  Projectile.height = 35;
 
   Projectile.prototype = new Entity();
   Projectile.prototype.constructor = Projectile;
