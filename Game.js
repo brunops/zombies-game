@@ -66,7 +66,7 @@
 
     update: function (modifier) {
       var verticalBoundary = 35,
-          horizontalBoundary = 35,
+          horizontalBoundary = 5,
           i,
           j,
           zombie,
