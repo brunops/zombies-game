@@ -16,7 +16,7 @@
     this.constructor.renderedHeight = renderedHeight ? renderedHeight : height;
 
     this.constructor.spriteSrc = spriteSrc;
-    this.constructor.framesPosition = framesPosition;
+    this.constructor.framesPosition = this.constructor.framesPosition || framesPosition;
     this.constructor.frameCooldown = frameCooldown;
     this.lastFrameUpdate = Date.now();
     this.currentFrame = 0;
