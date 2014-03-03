@@ -126,15 +126,6 @@
 
       }
 
-      // SPACE - shoot!
-      if (Game.keysDown[32]) {
-        // prevent spamming projectiles
-        if (now - Game.lastProjectileTime > Game.projectileCooldown) {
-          Game.projectilePool.create(Game.player.x, Game.player.y + (Player.height / 2) - (Projectile.height / 2));
-          Game.lastProjectileTime = now;
-        }
-      }
-
       // update all enemies
       for (i = 0; i < Game.zombiePool.size(); i++) {
         zombie = Game.zombiePool.objectPool()[i];
@@ -172,6 +163,8 @@
     },
 
     handleInput: function (modifier) {
+      var now = Date.now();
+
       // UP
       if (Game.keysDown[38] && Game.player.y > Game.verticalBoundary) {
         Game.player.setY(Game.player.y - (Game.player.speed * modifier));
@@ -190,6 +183,18 @@
       // LEFT
       if (Game.keysDown[37] && Game.player.x > Game.horizontalBoundary) {
         Game.player.setX(Game.player.x - (Game.player.speed * modifier));
+      }
+
+      // SPACE - shoot!
+      if (Game.keysDown[32]) {
+        // prevent spamming projectiles
+        if (now - Game.lastProjectileTime > Game.projectileCooldown) {
+          Game.projectilePool.create(
+            Game.player.x,
+            Game.player.y + (Player.height / 2) - (Projectile.height / 2)
+          );
+          Game.lastProjectileTime = now;
+        }
       }
     },
 
