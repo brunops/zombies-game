@@ -88,6 +88,10 @@
     },
 
     handleInput: function (modifier) {
+      if (Game.isGameOver) {
+        return;
+      }
+
       var now = Date.now();
 
       // UP
@@ -262,7 +266,9 @@
       }
 
       // Render Player
-      Game.player.render(Game.context);
+      if (!Game.isGameOver) {
+        Game.player.render(Game.context);
+      }
     }
   };
 
