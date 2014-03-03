@@ -38,7 +38,9 @@
     horizontalBoundary: 5,
 
     init: function () {
-      Game.createCanvas();
+      Game.canvas = document.getElementById('game-canvas');
+      Game.context = Game.canvas.getContext('2d');
+
       Game.loadBackground();
 
       Game.player = new Player(
@@ -61,16 +63,6 @@
       document.addEventListener('keyup', function (e) {
         delete Game.keysDown[e.keyCode];
       }, false);
-    },
-
-    createCanvas: function () {
-      Game.canvas = document.createElement('canvas');
-      Game.context = Game.canvas.getContext('2d');
-
-      Game.canvas.width = 512;
-      Game.canvas.height = 480;
-
-      document.body.appendChild(Game.canvas);
     },
 
     loadBackground: function () {
