@@ -93,8 +93,9 @@
 
       Game.gameTime += modifier;
 
-
       Game.handleInput(modifier);
+      Game.handleGameDifficulty();
+      Game.spawnZombies();
 
       // update all projectiles
       for (i = 0; i < Game.projectilePool.size(); i++) {
@@ -139,21 +140,6 @@
         }
       }
 
-      // Create some enemies
-      // It gets harder as time goes by..
-      if (Game.difficulty < Game.maxDifficulty &&
-          Game.gameTime - Game.lastDifficultyIncrease > Game.difficultyCooldown) {
-        Game.difficulty += Game.difficultyIncrement;
-        Game.lastDifficultyIncrease = Game.gameTime;
-      }
-
-      if (Math.random() < Game.difficulty) {
-        Game.zombiePool.create(
-          Game.canvas.width,
-          Math.random() * (Game.canvas.height - Zombie.height - (2 * Game.verticalBoundary)) + Game.verticalBoundary
-        );
-      }
-
       for (i = 0; i < Game.explosions.length; ++i) {
         Game.explosions[i].update();
         if (Game.explosions[i].currentFrame >= Explosion.framesPosition.length - 1) {
@@ -195,6 +181,27 @@
           );
           Game.lastProjectileTime = now;
         }
+      }
+    },
+
+    handleGameDifficulty: function () {
+      // It gets harder as time goes by..
+      if (Game.difficulty < Game.maxDifficulty &&
+          Game.gameTime - Game.lastDifficultyIncrease > Game.difficultyCooldown) {
+        Game.difficulty += Game.difficultyIncrement;
+        Game.lastDifficultyIncrease = Game.gameTime;
+      }
+    },
+
+    spawnZombies: function () {
+      // Create some enemies
+      if (Math.random() < Game.difficulty) {
+        // resets x coordinate
+        // randomize new y coordinate (constrained in available map space)
+        Game.zombiePool.create(
+          Game.canvas.width,
+          Math.random() * (Game.canvas.height - Zombie.height - (2 * Game.verticalBoundary)) + Game.verticalBoundary
+        );
       }
     },
 
