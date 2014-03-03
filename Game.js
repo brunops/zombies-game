@@ -32,6 +32,11 @@
     // How long it takes (in ms) for another projectile to be fired
     projectileCooldown: 100,
 
+    // How many pixels Player and Zombies are constrained by vertically/horizontally
+    // (this is interesting according to the background image used)
+    verticalBoundary: 35,
+    horizontalBoundary: 5,
+
     init: function () {
       Game.createCanvas();
       Game.loadBackground();
@@ -80,9 +85,7 @@
     },
 
     update: function (modifier) {
-      var verticalBoundary = 35,
-          horizontalBoundary = 5,
-          i,
+      var i,
           j,
           zombie,
           projectile,
@@ -90,25 +93,8 @@
 
       Game.gameTime += modifier;
 
-      // UP
-      if (Game.keysDown[38] && Game.player.y > verticalBoundary) {
-        Game.player.setY(Game.player.y - (Game.player.speed * modifier));
-      }
 
-      // DOWN
-      if (Game.keysDown[40] && Game.player.y < Game.canvas.height - verticalBoundary - Player.height) {
-        Game.player.setY(Game.player.y + (Game.player.speed * modifier));
-      }
-
-      // RIGHT
-      if (Game.keysDown[39] && Game.player.x < Game.canvas.width - horizontalBoundary - Player.width) {
-        Game.player.setX(Game.player.x + (Game.player.speed * modifier));
-      }
-
-      // LEFT
-      if (Game.keysDown[37] && Game.player.x > horizontalBoundary) {
-        Game.player.setX(Game.player.x - (Game.player.speed * modifier));
-      }
+      Game.handleInput(modifier);
 
       // update all projectiles
       for (i = 0; i < Game.projectilePool.size(); i++) {
@@ -173,7 +159,7 @@
       if (Math.random() < Game.difficulty) {
         Game.zombiePool.create(
           Game.canvas.width,
-          Math.random() * (Game.canvas.height - Zombie.height - (2 * verticalBoundary)) + verticalBoundary
+          Math.random() * (Game.canvas.height - Zombie.height - (2 * Game.verticalBoundary)) + Game.verticalBoundary
         );
       }
 
@@ -182,6 +168,28 @@
         if (Game.explosions[i].currentFrame >= Explosion.framesPosition.length - 1) {
           Game.explosions.splice(i--, 1);
         }
+      }
+    },
+
+    handleInput: function (modifier) {
+      // UP
+      if (Game.keysDown[38] && Game.player.y > Game.verticalBoundary) {
+        Game.player.setY(Game.player.y - (Game.player.speed * modifier));
+      }
+
+      // DOWN
+      if (Game.keysDown[40] && Game.player.y < Game.canvas.height - Game.verticalBoundary - Player.height) {
+        Game.player.setY(Game.player.y + (Game.player.speed * modifier));
+      }
+
+      // RIGHT
+      if (Game.keysDown[39] && Game.player.x < Game.canvas.width - Game.horizontalBoundary - Player.width) {
+        Game.player.setX(Game.player.x + (Game.player.speed * modifier));
+      }
+
+      // LEFT
+      if (Game.keysDown[37] && Game.player.x > Game.horizontalBoundary) {
+        Game.player.setX(Game.player.x - (Game.player.speed * modifier));
       }
     },
 
