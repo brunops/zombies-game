@@ -47,6 +47,9 @@
       // Time elapsed since Game began
       Game.gameTime = 0;
 
+      // Total score from killing zombies
+      Game.score = 0;
+
       // Maps which keys as currently pressed by e.keyCode
       Game.keysDown = {};
 
@@ -191,6 +194,9 @@
             if (projectile.isCollided(zombie)) {
               Game.explosions.push(new Explosion(zombie.x, zombie.y));
 
+              // hundred points for each zombie!
+              Game.score += 100;
+
               Game.projectilePool.destroy(projectile);
               i--;
               Game.zombiePool.destroy(zombie);
@@ -281,6 +287,17 @@
       if (!Game.isGameOver) {
         Game.player.render(Game.context);
       }
+
+      // Render score
+      Game.renderScore();
+    },
+
+    renderScore: function () {
+      Game.context.fillStyle = '#fff';
+      Game.context.font = '24px Helvetica';
+      Game.context.textAlign = 'left';
+      Game.context.textBaseline = 'top';
+      Game.context.fillText('Score: ' + Game.score, 10, 5);
     }
   };
 
