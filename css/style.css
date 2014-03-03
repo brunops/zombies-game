@@ -1,0 +1,40 @@
+body {
+  margin: 0;
+}
+
+#game-wrapper {
+  position: relative;
+  width: 512px;
+  height: 480px;
+  margin: 20px auto;
+  display: block;
+}
+
+#game-over, #game-over-overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  display: none;
+  z-index: 1;
+}
+
+#game-over-overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+#game-over {
+  font-size: 2em;
+  color: #fff;
+  text-align: center;
+  top: 130px;
+}
+
+#game-over p {
+  margin: 10px 0;
+}
+
+#game-over button {
+  margin-top: 50px;
+  font-size: 1em;
+}
