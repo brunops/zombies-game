@@ -37,6 +37,8 @@
     verticalBoundary: 35,
     horizontalBoundary: 5,
 
+    isGameOver: false,
+
     init: function () {
       Game.canvas = document.getElementById('game-canvas');
       Game.context = Game.canvas.getContext('2d');
@@ -146,6 +148,7 @@
       Game.updateProjectilesAndKillZombies(modifier);
       Game.updateZombies(modifier);
       Game.updateExplosions();
+      Game.updatePlayer();
     },
 
     updateProjectilesAndKillZombies: function (modifier) {
@@ -212,6 +215,27 @@
           Game.explosions.splice(i--, 1);
         }
       }
+    },
+
+    updatePlayer: function () {
+      var zombie,
+          i;
+
+      if (!Game.isGameOver) {
+        for (i = 0; i < Game.zombiePool.size(); ++i) {
+          zombie = Game.zombiePool.objectPool()[i];
+          if (zombie.isCollided(Game.player)) {
+            Game.gameOver();
+            break;
+          }
+        }
+      }
+    },
+
+    gameOver: function () {
+      document.getElementById('game-over-overlay').style.display = 'block';
+      document.getElementById('game-over').style.display = 'block';
+      Game.isGameOver = true;
     },
 
     render: function () {
