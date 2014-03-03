@@ -188,22 +188,27 @@
     render: function () {
       var i;
 
+      // Render Background
       if (Game.backgroundReady) {
         Game.context.drawImage(Game.backgroundImg, 0, 0);
       }
 
+      // Render Projectiles
       for (i = 0; i < Game.projectilePool.size(); ++i) {
         Game.projectilePool.objectPool()[i].render(Game.context);
       }
 
+      // Render Explosions
       for (i = 0; i < Game.explosions.length; ++i) {
         Game.explosions[i].render(Game.context);
       }
 
+      // Render Zombies
       for (i = 0; i < Game.zombiePool.size(); ++i) {
         Game.zombiePool.objectPool()[i].render(Game.context);
       }
 
+      // Render Player
       Game.player.render(Game.context);
     }
   };
