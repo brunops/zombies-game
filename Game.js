@@ -94,7 +94,7 @@
       Game.gameTime += modifier;
 
       Game.handleInput(modifier);
-      Game.handleGameDifficulty();
+      Game.handleDifficulty();
       Game.spawnZombies();
 
       // update all projectiles
@@ -184,7 +184,7 @@
       }
     },
 
-    handleGameDifficulty: function () {
+    handleDifficulty: function () {
       // It gets harder as time goes by..
       if (Game.difficulty < Game.maxDifficulty &&
           Game.gameTime - Game.lastDifficultyIncrease > Game.difficultyCooldown) {
