@@ -85,67 +85,12 @@
     },
 
     update: function (modifier) {
-      var i,
-          j,
-          zombie,
-          projectile,
-          now = Date.now();
-
       Game.gameTime += modifier;
 
       Game.handleInput(modifier);
       Game.handleDifficulty();
       Game.spawnZombies();
-
-      // update all projectiles
-      for (i = 0; i < Game.projectilePool.size(); i++) {
-        projectile = Game.projectilePool.objectPool()[i];
-
-        projectile.setX(projectile.x + (projectile.speed * modifier));
-
-        // delete projectile if out of the scene
-        if (projectile.x > Game.canvas.width) {
-          Game.projectilePool.destroy(projectile);
-          i--;
-        }
-        else {
-          // kill zombies!
-          for (j = 0; j < Game.zombiePool.size(); j++) {
-            zombie = Game.zombiePool.objectPool()[j];
-            if (projectile.isCollided(zombie)) {
-              Game.explosions.push(new Explosion(zombie.x, zombie.y));
-
-              Game.projectilePool.destroy(projectile);
-              i--;
-              Game.zombiePool.destroy(zombie);
-              j--;
-
-              break;
-            }
-          }
-        }
-
-      }
-
-      // update all enemies
-      for (i = 0; i < Game.zombiePool.size(); i++) {
-        zombie = Game.zombiePool.objectPool()[i];
-        zombie.update(now);
-        zombie.setX(zombie.x - (zombie.speed * modifier));
-
-        // delete zombie if out of the scene
-        if (zombie.x + Zombie.width < 0) {
-          Game.zombiePool.destroy(zombie);
-          i--;
-        }
-      }
-
-      for (i = 0; i < Game.explosions.length; ++i) {
-        Game.explosions[i].update();
-        if (Game.explosions[i].currentFrame >= Explosion.framesPosition.length - 1) {
-          Game.explosions.splice(i--, 1);
-        }
-      }
+      Game.updateEntities(modifier);
     },
 
     handleInput: function (modifier) {
@@ -202,6 +147,78 @@
           Game.canvas.width,
           Math.random() * (Game.canvas.height - Zombie.height - (2 * Game.verticalBoundary)) + Game.verticalBoundary
         );
+      }
+    },
+
+    updateEntities: function (modifier) {
+      Game.updateProjectilesAndKillZombies(modifier);
+      Game.updateZombies(modifier);
+      Game.updateExplosions();
+    },
+
+    updateProjectilesAndKillZombies: function (modifier) {
+      var i,
+          j,
+          zombie,
+          projectile;
+
+      // update all projectiles
+      for (i = 0; i < Game.projectilePool.size(); i++) {
+        projectile = Game.projectilePool.objectPool()[i];
+
+        projectile.setX(projectile.x + (projectile.speed * modifier));
+
+        // delete projectile if out of the scene
+        if (projectile.x > Game.canvas.width) {
+          Game.projectilePool.destroy(projectile);
+          i--;
+        }
+        else {
+          // kill zombies!
+          for (j = 0; j < Game.zombiePool.size(); j++) {
+            zombie = Game.zombiePool.objectPool()[j];
+            if (projectile.isCollided(zombie)) {
+              Game.explosions.push(new Explosion(zombie.x, zombie.y));
+
+              Game.projectilePool.destroy(projectile);
+              i--;
+              Game.zombiePool.destroy(zombie);
+              j--;
+
+              break;
+            }
+          }
+        }
+      }
+    },
+
+    updateZombies: function (modifier) {
+      var zombie,
+          i,
+          now = Date.now();
+
+      // update all enemies
+      for (i = 0; i < Game.zombiePool.size(); i++) {
+        zombie = Game.zombiePool.objectPool()[i];
+        zombie.update(now);
+        zombie.setX(zombie.x - (zombie.speed * modifier));
+
+        // delete zombie if out of the scene
+        if (zombie.x + Zombie.width < 0) {
+          Game.zombiePool.destroy(zombie);
+          i--;
+        }
+      }
+    },
+
+    updateExplosions: function () {
+      var i;
+
+      for (i = 0; i < Game.explosions.length; ++i) {
+        Game.explosions[i].update();
+        if (Game.explosions[i].currentFrame >= Explosion.framesPosition.length - 1) {
+          Game.explosions.splice(i--, 1);
+        }
       }
     },
 
