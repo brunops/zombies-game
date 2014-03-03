@@ -4,17 +4,35 @@
   'use strict';
 
   var Game = {
+    // Current game difficulty
+    difficulty: 0.01,
+
+    // Max difficulty that Game can reach at any given time
+    // It represents the chance percentage of spawning a new Zombie
+    maxDifficulty: 0.2,
+
+    // How much difficulty increases after its cooldown elapsed
+    difficultyIncrement: 0.005,
+
+    // How long it takes (in seconds) to difficulty to increase
+    difficultyCooldown: 3,
+
+    // Last time difficulty was increased
+    lastDifficultyIncrease: 0,
+
+    // Time elapsed since Game began
+    gameTime: 0,
+
+    // Maps which keys as currently pressed by e.keyCode
+    keysDown: {},
+
+    // Last time a projectile was shot by the player
+    lastProjectileTime: 0,
+
+    // How long it takes (in ms) for another projectile to be fired
+    projectileCooldown: 100,
+
     init: function () {
-      Game.difficulty = 0.01;
-      Game.maxDifficulty = 0.2;
-      Game.difficultyIncrement = 0.005;
-      Game.difficultyCooldown = 3;
-      Game.lastDifficultyIncrease = 0;
-
-      Game.gameTime = 0;
-
-      Game.keysDown = {};
-
       Game.createCanvas();
       Game.loadBackground();
 
@@ -26,9 +44,6 @@
       Game.zombiePool = new ObjectPoolMaker(Zombie, 100);
       Game.projectilePool = new ObjectPoolMaker(Projectile, 100);
       Game.explosions = [];
-
-      Game.lastProjectileTime = Date.now();
-      Game.projectileCooldown = 100;
 
       Game.bind();
     },
