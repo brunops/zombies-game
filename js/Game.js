@@ -18,7 +18,7 @@
     },
 
     neededScoreForLevel: function (level) {
-      return Math.floor(Math.pow(level, 3.5) * 100) + 1000;
+      return Math.floor(Math.pow(level, 3) * 100) + 1000;
     },
 
     bind: function () {
@@ -47,7 +47,7 @@
       Game.difficultyIncrement = 0.005;
 
       // How long it takes (in seconds) to difficulty to increase
-      Game.difficultyCooldown = 3;
+      Game.difficultyCooldown = 4;
 
       // Last time difficulty was increased
       Game.lastDifficultyIncrease = 0;
@@ -65,7 +65,13 @@
       Game.lastProjectileTime = 0;
 
       // How long it takes (in ms) for another projectile to be fired
-      Game.projectileCooldown = 100;
+      Game.projectileCooldown = 225;
+
+      // How much projectile speed improves after each level
+      Game.projectileCooldownImprove = 25;
+
+      // Maximum projectile speed (less is faster)
+      Game.minProjectileCooldown = 100;
 
       // How many pixels Player and Zombies are constrained by vertically/horizontally
       // (this is interesting according to the background image used)
@@ -264,6 +270,11 @@
       // Level up!
       if (Game.hasLeveled(Game.player.level)) {
         Game.player.level += 1;
+
+        Game.projectileCooldown -= Game.projectileCooldownImprove;
+        if (Game.projectileCooldown < Game.minProjectileCooldown) {
+          Game.projectileCooldown = Game.minProjectileCooldown;
+        }
       }
     },
 
