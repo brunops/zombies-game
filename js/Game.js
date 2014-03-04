@@ -1,4 +1,4 @@
-/* global Player, Projectile, Zombie, Explosion, ObjectPoolMaker */
+/* global Player, Projectile, Zombie, Explosion, ObjectPoolMaker, FlashMessage */
 
 (function () {
   'use strict';
@@ -95,6 +95,7 @@
 
       // Got lazy here and just used an array.. soon to be updated :p
       Game.explosions = [];
+      Game.flashMessages = [];
 
       document.getElementById('game-over-overlay').style.display = 'none';
       document.getElementById('game-over').style.display = 'none';
@@ -188,6 +189,7 @@
       Game.updateZombies(modifier);
       Game.updateExplosions();
       Game.updatePlayer();
+      Game.updateFlashMessages(modifier);
     },
 
     updateProjectilesAndKillZombies: function (modifier) {
@@ -225,6 +227,11 @@
                 i--;
               }
 
+              Game.flashMessages.push(new FlashMessage(
+                '+ 100',
+                zombie.x,
+                zombie.y
+              ));
               Game.zombiePool.destroy(zombie);
               j--;
 
@@ -282,10 +289,29 @@
       // Level up!
       if (Game.hasLeveled(Game.player.level)) {
         Game.player.level += 1;
+        Game.flashMessages.push(new FlashMessage(
+          'Level ' + Game.player.level,
+          Game.player.x,
+          Game.player.y,
+          '#E2E215',
+          '18px'
+        ));
 
         Game.projectileCooldown -= Game.projectileCooldownImprove;
         if (Game.projectileCooldown < Game.minProjectileCooldown) {
           Game.projectileCooldown = Game.minProjectileCooldown;
+        }
+      }
+    },
+
+    updateFlashMessages: function (modifier) {
+      var i,
+          now = Date.now();
+
+      for (i = 0; i < Game.flashMessages.length; ++i) {
+        Game.flashMessages[i].y -= modifier * 10;
+        if (now - Game.flashMessages[i].createdAt > 500) {
+          Game.flashMessages.splice(i--, 1);
         }
       }
     },
@@ -322,6 +348,11 @@
       // Render Player
       if (!Game.isGameOver) {
         Game.player.render(Game.context);
+      }
+
+      // Render Flash messages
+      for (i = 0; i < Game.flashMessages.length; ++i) {
+        Game.flashMessages[i].render(Game.context);
       }
 
       // Render score
