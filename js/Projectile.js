@@ -2,7 +2,7 @@
 (function() {
   'use strict';
 
-  function Projectile(x, y, speed) {
+  function Projectile(x, y, speed, power) {
     Entity.call(this,
       x,
       y,
@@ -15,6 +15,8 @@
       35,
       25
     );
+
+    this.power = power || 1;
   }
 
   Projectile.prototype = new Entity();
