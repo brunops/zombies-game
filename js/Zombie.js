@@ -3,8 +3,7 @@
   'use strict';
 
   function Zombie(x, y, speed) {
-    this.base = Entity;
-    this.base(
+    Entity.call(this,
       x,
       y,
       32,

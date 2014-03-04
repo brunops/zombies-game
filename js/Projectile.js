@@ -3,8 +3,7 @@
   'use strict';
 
   function Projectile(x, y, speed) {
-    this.base = Entity;
-    this.base(
+    Entity.call(this,
       x,
       y,
       45,

@@ -3,8 +3,7 @@
   'use strict';
 
   function Player(x, y, speed) {
-    this.base = Entity;
-    this.base(
+    Entity.call(this,
       x,
       y,
       Player.width,
