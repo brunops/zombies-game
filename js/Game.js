@@ -13,6 +13,14 @@
       Game.reset();
     },
 
+    hasLeveled: function (level) {
+      return Game.score > Game.neededScoreForLevel(level + 1);
+    },
+
+    neededScoreForLevel: function (level) {
+      return Math.floor(Math.pow(level, 3.5) * 100) + 1000;
+    },
+
     bind: function () {
       document.addEventListener('keydown', function (e) {
         Game.keysDown[e.keyCode] = true;
@@ -251,6 +259,11 @@
             break;
           }
         }
+      }
+
+      // Level up!
+      if (Game.hasLeveled(Game.player.level)) {
+        Game.player.level += 1;
       }
     },
 
