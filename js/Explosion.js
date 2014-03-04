@@ -3,8 +3,7 @@
   'use strict';
 
   function Explosion(x, y) {
-    this.base = Entity;
-    this.base(
+    Entity.call(this,
       x,
       y,
       32,
