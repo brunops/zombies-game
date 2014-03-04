@@ -41,7 +41,7 @@
 
       // Max difficulty that Game can reach at any given time
       // It represents the chance percentage of spawning a new Zombie
-      Game.maxDifficulty = 0.2;
+      Game.maxDifficulty = 0.42;
 
       // How much difficulty increases after its cooldown elapsed
       Game.difficultyIncrement = 0.005;
@@ -72,6 +72,10 @@
 
       // Maximum projectile speed (less is faster)
       Game.minProjectileCooldown = 100;
+
+      // Define how many levels it takes to increase projectile power by 1
+      // (huge difference)
+      Game.powerUpProjectileIn = 10;
 
       // How many pixels Player and Zombies are constrained by vertically/horizontally
       // (this is interesting according to the background image used)
@@ -149,7 +153,9 @@
         if (now - Game.lastProjectileTime > Game.projectileCooldown) {
           Game.projectilePool.create(
             Game.player.x,
-            Game.player.y + (Player.height / 2) - (Projectile.height / 2)
+            Game.player.y + (Player.height / 2) - (Projectile.height / 2),
+            400,
+            Math.floor(Game.player.level / Game.powerUpProjectileIn) + 1
           );
           Game.lastProjectileTime = now;
         }
@@ -211,8 +217,14 @@
               // hundred points for each zombie!
               Game.score += 100;
 
-              Game.projectilePool.destroy(projectile);
-              i--;
+              // Decrease projectile power and
+              projectile.power--;
+              // destroy projectile if it has no more power
+              if (projectile.power === 0) {
+                Game.projectilePool.destroy(projectile);
+                i--;
+              }
+
               Game.zombiePool.destroy(zombie);
               j--;
 
