@@ -22,7 +22,7 @@
         delete Game.keysDown[e.keyCode];
       }, false);
 
-      document.getElementById('play-again').addEventListener('click', function (e) {
+      document.getElementById('play-again').addEventListener('click', function () {
         Game.reset();
       });
     },
