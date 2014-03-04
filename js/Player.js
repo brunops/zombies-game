@@ -13,6 +13,8 @@
       0,
       speed || 150
     );
+
+    this.level = 1;
   }
 
   Player.width = 32;

@@ -289,15 +289,17 @@
       }
 
       // Render score
-      Game.renderScore();
+      Game.renderStatus();
     },
 
-    renderScore: function () {
+    renderStatus: function () {
       Game.context.fillStyle = '#fff';
-      Game.context.font = '24px Helvetica';
+      Game.context.font = '20px Helvetica';
       Game.context.textAlign = 'left';
       Game.context.textBaseline = 'top';
+
       Game.context.fillText('Score: ' + Game.score, 10, 5);
+      Game.context.fillText('Level: ' + Game.player.level, Game.canvas.width - 110, 5);
     }
   };
 
