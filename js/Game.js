@@ -230,7 +230,8 @@
               Game.flashMessages.push(new FlashMessage(
                 '+ 100',
                 zombie.x,
-                zombie.y
+                zombie.y,
+                500
               ));
               Game.zombiePool.destroy(zombie);
               j--;
@@ -293,16 +294,18 @@
           'Level ' + Game.player.level,
           Game.player.x,
           Game.player.y,
+          700,
           '#E2E215',
           '18px'
         ));
 
         // power up ?
-        if (Game.player.level % 10 === 0) {
+        if (Game.player.level % 1 === 0) {
           Game.flashMessages.push(new FlashMessage(
             'Power Up!',
             Game.player.x,
             Game.player.y - Player.height / 2,
+            1000,
             '#fff',
             '16px'
           ));
@@ -321,7 +324,7 @@
 
       for (i = 0; i < Game.flashMessages.length; ++i) {
         Game.flashMessages[i].y -= modifier * 10;
-        if (now - Game.flashMessages[i].createdAt > 500) {
+        if (now - Game.flashMessages[i].createdAt > Game.flashMessages[i].duration) {
           Game.flashMessages.splice(i--, 1);
         }
       }

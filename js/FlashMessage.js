@@ -5,10 +5,11 @@
     this.init(message, x, y, color, size, font);
   }
 
-  FlashMessage.prototype.init = function (message, x, y, color, size, font) {
+  FlashMessage.prototype.init = function (message, x, y, duration, color, size, font) {
     this.message = message;
     this.x = x;
     this.y = y;
+    this.duration = duration;
     this.color = color || '#fff';
     this.size = size || '14px';
     this.font = font || 'Helvetica';
