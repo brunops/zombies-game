@@ -297,6 +297,17 @@
           '18px'
         ));
 
+        // power up ?
+        if (Game.player.level % 10 === 0) {
+          Game.flashMessages.push(new FlashMessage(
+            'Power Up!',
+            Game.player.x,
+            Game.player.y - Player.height / 2,
+            '#fff',
+            '16px'
+          ));
+        }
+
         Game.projectileCooldown -= Game.projectileCooldownImprove;
         if (Game.projectileCooldown < Game.minProjectileCooldown) {
           Game.projectileCooldown = Game.minProjectileCooldown;
