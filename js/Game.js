@@ -300,7 +300,7 @@
         ));
 
         // power up ?
-        if (Game.player.level % 1 === 0) {
+        if (Game.player.level % 10 === 0) {
           Game.flashMessages.push(new FlashMessage(
             'Power Up!',
             Game.player.x,
