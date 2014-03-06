@@ -306,7 +306,7 @@
             Game.player.x,
             Game.player.y - Player.height / 2,
             1000,
-            '#fff',
+            '#34FAC3',
             '16px'
           ));
         }
