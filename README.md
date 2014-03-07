@@ -4,9 +4,6 @@ Poking around with canvas and trying to make stuff move and explode.. maybe with
 ##Play it
 Game is now live! [play it here!](http://brunops.org/projects/zombies)
 
-##Read about it
-I wrote a post about it, [read it here](http://brunops.org/projects)
-
 ##Credits
 Although I chose to arrange the code in a completely different way, all these tutorials helped along the way:
 * [How to make a simple HTML5 Canvas game](http://www.lostdecadegames.com/how-to-make-a-simple-html5-canvas-game/)
