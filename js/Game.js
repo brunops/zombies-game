@@ -92,8 +92,8 @@
       // Store pool of objects to be reused for each Entity
       Game.zombiePool = new ObjectPoolMaker(Zombie, 100);
       Game.projectilePool = new ObjectPoolMaker(Projectile, 100);
-      Game.explosionPool = new ObjectPoolMaker(Explosion, 50);
-      Game.flashMessages = [];
+      Game.explosionPool = new ObjectPoolMaker(Explosion, 100);
+      Game.flashMessagePool = new ObjectPoolMaker(FlashMessage, 100);
 
       document.getElementById('game-over-overlay').style.display = 'none';
       document.getElementById('game-over').style.display = 'none';
@@ -225,12 +225,12 @@
                 i--;
               }
 
-              Game.flashMessages.push(new FlashMessage(
+              Game.flashMessagePool.create(
                 '+ 100',
                 zombie.x,
                 zombie.y,
                 500
-              ));
+              );
               Game.zombiePool.destroy(zombie);
               j--;
 
@@ -290,25 +290,25 @@
       // Level up!
       if (Game.hasLeveled(Game.player.level)) {
         Game.player.level += 1;
-        Game.flashMessages.push(new FlashMessage(
+        Game.flashMessagePool.create(
           'Level ' + Game.player.level,
           Game.player.x,
           Game.player.y,
           700,
           '#E2E215',
           '18px'
-        ));
+        );
 
         // power up ?
         if (Game.player.level % 10 === 0) {
-          Game.flashMessages.push(new FlashMessage(
+          Game.flashMessagePool.create(
             'Power Up!',
             Game.player.x,
             Game.player.y - Player.height / 2,
             1000,
             '#34FAC3',
             '16px'
-          ));
+          );
         }
 
         Game.projectileCooldown -= Game.projectileCooldownImprove;
@@ -320,12 +320,14 @@
 
     updateFlashMessages: function (modifier) {
       var i,
+          flashMessage,
           now = Date.now();
 
-      for (i = 0; i < Game.flashMessages.length; ++i) {
-        Game.flashMessages[i].y -= modifier * 10;
-        if (now - Game.flashMessages[i].createdAt > Game.flashMessages[i].duration) {
-          Game.flashMessages.splice(i--, 1);
+      for (i = 0; i < Game.flashMessagePool.size(); ++i) {
+        flashMessage = Game.flashMessagePool.objectPool()[i];
+        flashMessage.y -= modifier * 10;
+        if (now - flashMessage.createdAt > flashMessage.duration) {
+          Game.flashMessagePool.destroy(flashMessage);
         }
       }
     },
@@ -365,8 +367,8 @@
       }
 
       // Render Flash messages
-      for (i = 0; i < Game.flashMessages.length; ++i) {
-        Game.flashMessages[i].render(Game.context);
+      for (i = 0; i < Game.flashMessagePool.size(); ++i) {
+        Game.flashMessagePool.objectPool()[i].render(Game.context);
       }
 
       // Render score
