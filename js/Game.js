@@ -24,10 +24,12 @@
     bind: function () {
       document.addEventListener('keydown', function (e) {
         Game.keysDown[e.keyCode] = true;
+        e.preventDefault();
       }, false);
 
       document.addEventListener('keyup', function (e) {
         delete Game.keysDown[e.keyCode];
+        e.preventDefault();
       }, false);
 
       window.addEventListener('blur', function () {
