@@ -30,9 +30,13 @@
         delete Game.keysDown[e.keyCode];
       }, false);
 
+      window.addEventListener('blur', function (e) {
+        Game.keysDown = {};
+      }, false);
+
       document.getElementById('play-again').addEventListener('click', function () {
         Game.reset();
-      });
+      }, false);
     },
 
     reset: function () {
