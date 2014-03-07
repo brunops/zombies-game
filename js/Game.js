@@ -24,12 +24,20 @@
     bind: function () {
       document.addEventListener('keydown', function (e) {
         Game.keysDown[e.keyCode] = true;
-        e.preventDefault();
+
+        // prevent window from scrolling when pressing UP or DOWN or SPACE
+        if (e.keyCode === 38 || e.keyCode === 40 || e.keyCode === 32) {
+          e.preventDefault();
+        }
       }, false);
 
       document.addEventListener('keyup', function (e) {
         delete Game.keysDown[e.keyCode];
-        e.preventDefault();
+
+        // prevent window from scrolling when pressing UP or DOWN or SPACE
+        if (e.keyCode === 38 || e.keyCode === 40 || e.keyCode === 32) {
+          e.preventDefault();
+        }
       }, false);
 
       window.addEventListener('blur', function () {
