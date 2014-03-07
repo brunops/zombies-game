@@ -17,9 +17,10 @@ window.requestAnimFrame = (function () {
   var before = Date.now();
   window.requestAnimFrame(function update() {
     var now = Date.now(),
-        delta = now - before;
+        delta = now - before,
+        modifier = delta / 1000;
 
-    Game.update(delta / 1000);
+    Game.update(modifier < 1 ? modifier : 0);
     Game.render();
 
     before = now;
