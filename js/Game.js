@@ -30,7 +30,7 @@
         delete Game.keysDown[e.keyCode];
       }, false);
 
-      window.addEventListener('blur', function (e) {
+      window.addEventListener('blur', function () {
         Game.keysDown = {};
       }, false);
 
@@ -45,7 +45,7 @@
 
       // Max difficulty that Game can reach at any given time
       // It represents the chance percentage of spawning a new Zombie
-      Game.maxDifficulty = 0.42;
+      Game.maxDifficulty = 0.40;
 
       // How much difficulty increases after its cooldown elapsed
       Game.difficultyIncrement = 0.005;
