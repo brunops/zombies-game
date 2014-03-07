@@ -87,9 +87,9 @@
   Entity.prototype.isCollided = function (entity2) {
     // no collision if there's any gap
     return !(this.x + this.constructor.renderedWidth <= entity2.x ||
-      this.x > entity2.x + this.constructor.renderedWidth         ||
+      this.x > entity2.x + entity2.constructor.renderedWidth         ||
       this.y + this.constructor.renderedHeight <= entity2.y       ||
-      this.y > entity2.y + this.constructor.renderedHeight
+      this.y > entity2.y + entity2.constructor.renderedHeight
     );
   };
 
