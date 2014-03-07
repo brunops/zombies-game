@@ -84,12 +84,16 @@
     }
   };
 
+  // allow a little bit of proximity between entities before considering
+  // a collision, it improves the experience, otherwise some
+  // entities collide before it was expected
+  Entity.adjust = 5;
   Entity.prototype.isCollided = function (entity2) {
     // no collision if there's any gap
-    return !(this.x + this.constructor.renderedWidth <= entity2.x ||
-      this.x > entity2.x + entity2.constructor.renderedWidth         ||
-      this.y + this.constructor.renderedHeight <= entity2.y       ||
-      this.y > entity2.y + entity2.constructor.renderedHeight
+    return !(this.x + this.constructor.renderedWidth - Entity.adjust <= entity2.x ||
+      this.x > entity2.x + entity2.constructor.renderedWidth - Entity.adjust      ||
+      this.y + this.constructor.renderedHeight - Entity.adjust <= entity2.y       ||
+      this.y > entity2.y + entity2.constructor.renderedHeight - Entity.adjust
     );
   };
 
