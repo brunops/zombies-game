@@ -92,9 +92,7 @@
       // Store pool of objects to be reused for each Entity
       Game.zombiePool = new ObjectPoolMaker(Zombie, 100);
       Game.projectilePool = new ObjectPoolMaker(Projectile, 100);
-
-      // Got lazy here and just used an array.. soon to be updated :p
-      Game.explosions = [];
+      Game.explosionPool = new ObjectPoolMaker(Explosion, 50);
       Game.flashMessages = [];
 
       document.getElementById('game-over-overlay').style.display = 'none';
@@ -214,7 +212,7 @@
           for (j = 0; j < Game.zombiePool.size(); j++) {
             zombie = Game.zombiePool.objectPool()[j];
             if (projectile.isCollided(zombie)) {
-              Game.explosions.push(new Explosion(zombie.x, zombie.y));
+              Game.explosionPool.create(zombie.x, zombie.y);
 
               // hundred points for each zombie!
               Game.score += 100;
@@ -263,12 +261,14 @@
     },
 
     updateExplosions: function () {
-      var i;
+      var i,
+          explosion;
 
-      for (i = 0; i < Game.explosions.length; ++i) {
-        Game.explosions[i].update();
-        if (Game.explosions[i].currentFrame >= Explosion.framesPosition.length - 1) {
-          Game.explosions.splice(i--, 1);
+      for (i = 0; i < Game.explosionPool.size(); ++i) {
+        explosion = Game.explosionPool.objectPool()[i];
+        explosion.update();
+        if (explosion.currentFrame >= Explosion.framesPosition.length - 1) {
+          Game.explosionPool.destroy(explosion);
         }
       }
     },
@@ -350,8 +350,8 @@
       }
 
       // Render Explosions
-      for (i = 0; i < Game.explosions.length; ++i) {
-        Game.explosions[i].render(Game.context);
+      for (i = 0; i < Game.explosionPool.size(); ++i) {
+        Game.explosionPool.objectPool()[i].render(Game.context);
       }
 
       // Render Zombies
