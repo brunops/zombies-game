@@ -1,6 +1,8 @@
 # Canvas Game
 Poking around with canvas and trying to make stuff move and explode.. maybe with some zombies
 
+![Zombies after brainZ](public/images/zombies.png)
+
 ## Play it
 Game is now live! [play it here!](http://brunops.org/projects/zombies)
 
