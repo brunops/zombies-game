@@ -3,6 +3,9 @@ Poking around with canvas and trying to make stuff move and explode.. maybe with
 
 ![Zombies after brainZ](public/images/zombies.png)
 
+##Read about it
+I wrote a post about it, [read it here](http://brunops.org/zombies-html5-canvas-game/)
+
 ## Play it
 Game is now live! [play it here!](http://brunops.org/projects/zombies)
 
