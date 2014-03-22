@@ -6,7 +6,7 @@
   display: block;
 }
 
-#game-over, #game-over-overlay {
+#game-overlay, #game-overlay div {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -15,22 +15,22 @@
   z-index: 1;
 }
 
-#game-over-overlay {
+#game-overlay {
   background: rgba(0, 0, 0, 0.7);
 }
 
-#game-over {
+#game-overlay div {
   font-size: 2em;
   color: #fff;
   text-align: center;
   top: 130px;
 }
 
-#game-over p {
+#game-overlay p {
   margin: 10px 0;
 }
 
-#game-over button {
+#game-overlay button {
   margin-top: 50px;
   font-size: 1em;
 }
