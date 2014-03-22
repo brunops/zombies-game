@@ -8,8 +8,6 @@
       Game.canvas = document.getElementById('game-canvas');
       Game.context = Game.canvas.getContext('2d');
 
-      Game.isPaused = false;
-
       Game.loadBackground();
       Game.bind();
       Game.reset();
@@ -105,6 +103,8 @@
       // (this is interesting according to the background image used)
       Game.verticalBoundary = 35;
       Game.horizontalBoundary = 5;
+
+      Game.isPaused = false;
 
       Game.isGameOver = false;
 
