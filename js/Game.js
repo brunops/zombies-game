@@ -29,7 +29,7 @@
         if (e.keyCode === 38 || e.keyCode === 40 || e.keyCode === 32) {
           e.preventDefault();
         }
-        if (e.keyCode === 80) {
+        if (!Game.isGameOver && e.keyCode === 80) {
           Game.isPaused = !Game.isPaused;
           Game.gamePause();
         }
@@ -377,6 +377,10 @@
     },
 
     render: function () {
+      if (Game.isPaused) {
+        return;
+      }
+
       var i;
 
       // Render Background
