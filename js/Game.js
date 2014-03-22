@@ -8,6 +8,8 @@
       Game.canvas = document.getElementById('game-canvas');
       Game.context = Game.canvas.getContext('2d');
 
+      Game.isPaused = false;
+
       Game.loadBackground();
       Game.bind();
       Game.reset();
@@ -29,6 +31,10 @@
         if (e.keyCode === 38 || e.keyCode === 40 || e.keyCode === 32) {
           e.preventDefault();
         }
+        if (e.keyCode === 80) {
+          Game.isPaused = !Game.isPaused;
+          Game.gamePause();
+        }
       }, false);
 
       document.addEventListener('keyup', function (e) {
@@ -46,6 +52,10 @@
 
       document.getElementById('play-again').addEventListener('click', function () {
         Game.reset();
+      }, false);
+      document.getElementById('return-play').addEventListener('click', function () {
+        Game.isPaused = false;
+        Game.gamePause();
       }, false);
     },
 
@@ -109,8 +119,9 @@
       Game.explosionPool = new ObjectPoolMaker(Explosion, 100);
       Game.flashMessagePool = new ObjectPoolMaker(FlashMessage, 100);
 
-      document.getElementById('game-over-overlay').style.display = 'none';
+      document.getElementById('game-overlay').style.display = 'none';
       document.getElementById('game-over').style.display = 'none';
+      document.getElementById('game-paused').style.display = 'none';
     },
 
     loadBackground: function () {
@@ -125,6 +136,10 @@
     },
 
     update: function (modifier) {
+      if (Game.isPaused) {
+        return;
+      }
+
       Game.gameTime += modifier;
 
       Game.handleInput(modifier);
@@ -347,9 +362,18 @@
     },
 
     gameOver: function () {
-      document.getElementById('game-over-overlay').style.display = 'block';
+      document.getElementById('game-overlay').style.display = 'block';
       document.getElementById('game-over').style.display = 'block';
       Game.isGameOver = true;
+    },
+
+    gamePause: function () {
+      var newDisplay = 'block';
+      if (document.getElementById('game-paused').style.display === 'block') {
+        newDisplay = 'none';
+      }
+      document.getElementById('game-overlay').style.display = newDisplay;
+      document.getElementById('game-paused').style.display = newDisplay;
     },
 
     render: function () {
