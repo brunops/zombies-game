@@ -30,7 +30,6 @@
           e.preventDefault();
         }
         if (!Game.isGameOver && e.keyCode === 80) {
-          Game.isPaused = !Game.isPaused;
           Game.gamePause();
         }
       }, false);
@@ -52,7 +51,6 @@
         Game.reset();
       }, false);
       document.getElementById('return-play').addEventListener('click', function () {
-        Game.isPaused = false;
         Game.gamePause();
       }, false);
     },
@@ -368,6 +366,8 @@
     },
 
     gamePause: function () {
+      Game.isPaused = !Game.isPaused;
+
       var newDisplay = 'block';
       if (document.getElementById('game-paused').style.display === 'block') {
         newDisplay = 'none';
