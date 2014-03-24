@@ -50,6 +50,7 @@
       document.getElementById('play-again').addEventListener('click', function () {
         Game.reset();
       }, false);
+
       document.getElementById('return-play').addEventListener('click', function () {
         Game.gamePause();
       }, false);
