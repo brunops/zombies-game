@@ -1,4 +1,4 @@
-/* global Game */
+/* global require */
 window.requestAnimFrame = (function () {
   'use strict';
   return window.requestAnimationFrame       ||
@@ -8,6 +8,8 @@ window.requestAnimFrame = (function () {
            window.setTimeout(callback, 1000 / 60);
          };
 })();
+
+var Game = require('./Game');
 
 (function () {
   'use strict';

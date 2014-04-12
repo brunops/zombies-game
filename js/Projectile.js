@@ -1,5 +1,8 @@
-/* global Entity */
-(function() {
+/* global module, require */
+
+var Entity = require('./Entity');
+
+module.exports = (function() {
   'use strict';
 
   function Projectile(x, y, speed, power) {
@@ -22,7 +25,5 @@
   Projectile.prototype = new Entity();
   Projectile.prototype.constructor = Projectile;
 
-  // Make Projectile available globally
-  window.Projectile = Projectile;
-
+  return Projectile;
 }());

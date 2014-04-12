@@ -1,5 +1,7 @@
-/* global Entity */
-(function() {
+/* global module, require */
+var Entity = require('./Entity');
+
+module.exports = (function() {
   'use strict';
 
   function Zombie(x, y, speed) {
@@ -62,7 +64,5 @@
     }
   };
 
-  // Make Zombie available globally
-  window.Zombie = Zombie;
-
+  return Zombie;
 }());

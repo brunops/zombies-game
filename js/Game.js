@@ -1,6 +1,13 @@
-/* global Player, Projectile, Zombie, Explosion, ObjectPoolMaker, FlashMessage */
+/* global module, require */
 
-(function () {
+var Entity = require('./Entity');
+var Player = require('./Player');
+var Projectile = require('./Projectile');
+var Zombie = require('./Zombie');
+var FlashMessage = require('./FlashMessage');
+var ObjectPoolMaker = require('./ObjectPoolMaker');
+
+module.exports = (function () {
   'use strict';
 
   var Game = {
@@ -429,6 +436,5 @@
     }
   };
 
-  // expose Game globally
-  window.Game = Game;
+  return Game;
 }());

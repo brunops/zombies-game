@@ -1,4 +1,6 @@
-(function () {
+/* global module */
+
+module.exports = (function () {
   'use strict';
 
   function Entity(x, y, width, height, spriteSrc, framesPosition, frameCooldown, speed, renderedWidth, renderedHeight) {
@@ -97,7 +99,5 @@
     );
   };
 
-  // Make Entity available globally
-  window.Entity = Entity;
-
+  return Entity;
 }());

@@ -1,4 +1,7 @@
-/* global Entity */
+/* global module, require */
+
+var Entity = require('./Entity');
+
 (function() {
   'use strict';
 
@@ -23,7 +26,5 @@
   Player.prototype = new Entity();
   Player.prototype.constructor = Player;
 
-  // Make Player available globally
-  window.Player = Player;
-
+  return Player;
 }());

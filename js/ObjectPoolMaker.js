@@ -1,4 +1,6 @@
-(function () {
+/* global module, require */
+
+module.exports = (function () {
   'use strict';
 
   function ObjectPoolMaker(Constructor, size) {
@@ -57,7 +59,5 @@
     };
   }
 
-
-  // make ObjectPoolMaker available globally
-  window.ObjectPoolMaker = ObjectPoolMaker;
+  return ObjectPoolMaker;
 }());
