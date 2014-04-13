@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
+var imagemin = require('gulp-imagemin');
 
 gulp.task('scripts', function () {
   return browserify('./js/main.js')
@@ -21,6 +22,7 @@ gulp.task('html', function () {
 
 gulp.task('images', function () {
   return gulp.src('./public/images/**/*')
+    .pipe(imagemin())
     .pipe(gulp.dest('./build/public/images'))
 });
 
