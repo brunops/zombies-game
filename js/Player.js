@@ -2,7 +2,7 @@
 
 var Entity = require('./Entity');
 
-(function() {
+module.exports = (function() {
   'use strict';
 
   function Player(x, y, speed) {
