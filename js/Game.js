@@ -3,6 +3,7 @@
 var Entity = require('./Entity');
 var Player = require('./Player');
 var Projectile = require('./Projectile');
+var Explosion = require('./Explosion');
 var Zombie = require('./Zombie');
 var FlashMessage = require('./FlashMessage');
 var ObjectPoolMaker = require('./ObjectPoolMaker');
