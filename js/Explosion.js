@@ -1,5 +1,8 @@
-/* global Entity */
-(function () {
+/* global module, require */
+
+var Entity = require('./Entity');
+
+module.exports = (function () {
   'use strict';
 
   function Explosion(x, y) {
@@ -20,6 +23,5 @@
   Explosion.prototype = new Entity();
   Explosion.prototype.constructor = Explosion;
 
-  // Make Explosion globally available
-  window.Explosion = Explosion;
+  return Explosion;
 }());

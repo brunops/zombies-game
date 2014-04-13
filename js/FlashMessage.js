@@ -1,4 +1,8 @@
-(function () {
+/* global module, require */
+
+var Entity = require('./Entity');
+
+module.exports = (function () {
   'use strict';
 
   function FlashMessage(message, x, y, color, size, font) {
@@ -25,6 +29,5 @@
     context.fillText(this.message, this.x, this.y);
   };
 
-  // make FlashMessage globally available
-  window.FlashMessage = FlashMessage;
+  return FlashMessage;
 }());
