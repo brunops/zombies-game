@@ -27,8 +27,8 @@ gulp.task('images', function () {
 });
 
 gulp.task('watch', function () {
-  gulp.watch('./js', ['scripts']);
-  gulp.watch('./css', ['css']);
+  gulp.watch('./js/**/*.js', ['scripts']);
+  gulp.watch('./css/**/*.css', ['css']);
   gulp.watch('./*.html', ['html']);
 });
 
