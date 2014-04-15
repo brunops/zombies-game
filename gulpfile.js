@@ -38,7 +38,8 @@ gulp.task('open', function () {
     app: 'google chrome'
   };
 
-  return gulp.src("./build/index.html").pipe(open('./build/index.html', options));
+  return gulp.src('./build/index.html')
+    .pipe(open('./build/index.html', options));
 });
 
 gulp.task('default', ['scripts', 'css', 'html', 'images', 'watch', 'open']);
