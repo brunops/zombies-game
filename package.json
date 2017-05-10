@@ -1,0 +1,26 @@
+{
+  "name": "zombies-game",
+  "version": "1.0.0",
+  "description": "Zombies game",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brunops/zombies-game.git"
+  },
+  "author": "brunops",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/brunops/zombies-game/issues"
+  },
+  "homepage": "https://github.com/brunops/zombies-game#readme",
+  "dependencies": {
+    "browserify": "^14.3.0",
+    "gulp": "^3.9.1",
+    "gulp-imagemin": "^3.2.0",
+    "gulp-open": "^2.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
